@@ -1,0 +1,1 @@
+# CGAN_Magic_Cards
