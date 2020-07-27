@@ -90,33 +90,41 @@ class MagicDataset(data.Dataset):
     DATASET_FOLDERS_FILE = "dataset_folders"
     metadata = json.load(open(os.path.join(root, METADATA_FILE)))
     dataset_folders = open(os.path.join(root, DATASET_FOLDERS_FILE))
-    data_dict = {}
-    classes_dict = {}
+    #data_dict = {}
+    #classes_dict = {}
+    #imgs = []
+    card_to_name = {}
+    name_to_class = {}
 
     for folder in dataset_folders:
       folder = os.path.join(root, folder.strip())
       for card_filename in os.listdir(folder):
           card_name = re.split("( \[.*\])?\.", card_filename)[0]
           try:
-            if (("Creature" in metadata[card_name]["type"] or "Land" in metadata[card_name]["type"])
+            if (("Creature" in metadata[card_name]["type"] or 
+                "Land" in metadata[card_name]["type"])
                 and metadata[card_name]["subtypes"]):
                 card_path = os.path.join(folder, card_filename)
-                if card_name in data_dict.keys():
-                  data_dict[card_name].append(card_path)
-                else:
-                  data_dict[card_name] = [card_path]
+                # if card_name in data_dict.keys():
+                #   data_dict[card_name].append(card_path)
+                # else:
+                #   data_dict[card_name] = [card_path]
+                card_to_name[card_path] = card_name
+                name_to_class[card_name] = metadata[card_name]["subtypes"][0]
+                #imgs.append((card_path, ))
           except:
             continue
 
-    for k, v in data_dict.items():
-      k2 = metadata[k]["subtypes"][0]
-      if k2 in classes_dict.keys():
-          classes_dict[k2].extend(v)
-      else:
-          classes_dict[k2] = v.copy()
+    # for k, v in data_dict.items():
+    #   k2 = metadata[k]["subtypes"][0]
+    #   if k2 in classes_dict.keys():
+    #       classes_dict[k2].extend(v)
+    #   else:
+    #       classes_dict[k2] = v.copy()
 
-    class_to_idx = {k: i for i, k in enumerate(classes_dict)} 
-    imgs = {i: (k, class_to_idx[data_dict[k]]) for i, k in enumerate(data_dict)}
+    class_to_idx = {k: i for i, k in enumerate(set(name_to_class.values()))}
+    imgs = {i: (card_path, class_to_idx[name_to_class[card_to_name[card_path]]]) 
+            for i, card_path in enumerate(card_to_name)}
 
     self.root = root
     self.class_to_idx = class_to_idx
@@ -125,8 +133,8 @@ class MagicDataset(data.Dataset):
     self.target_transform = target_transform
     self.loader = loader
     self.load_in_mem = load_in_mem
-    self.data_dict = data_dict
-    self.classes_dict = classes_dict
+    # self.data_dict = data_dict
+    # self.classes_dict = classes_dict
 
 
   def __getitem__(self, index):
@@ -149,7 +157,7 @@ class MagicDataset(data.Dataset):
     return img, int(target)
 
   def __len__(self):
-    return len(self.data_dict)
+    return len(self.imgs)
 
   def __repr__(self):
     fmt_str = 'Dataset ' + self.__class__.__name__ + '\n'
