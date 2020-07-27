@@ -617,7 +617,7 @@ def get_data_loaders(dataset, data_root=None, augment=False, batch_size=64,
         train_transform = []
       elif dataset == 'Magic':
         # 0 Augmentation Techniques
-        train_transform = [transforms.Resize(image_size, image_size)]
+        train_transform = [transforms.Resize([image_size, image_size])]
       else:
         train_transform = [CenterCropLongEdge(), transforms.Resize(image_size)]
       # train_transform = [transforms.Resize(image_size), transforms.CenterCrop]
