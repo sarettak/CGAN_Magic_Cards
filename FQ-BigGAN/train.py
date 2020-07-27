@@ -205,7 +205,7 @@ def run(config):
         train_fns.save_and_sample(G, D, G_ema, z_, y_, fixed_z, fixed_y, 
                                   state_dict, config, experiment_name)
 
-      # # Test every specified interval
+      #### INCEPTION #### Test every specified interval
       # if not (state_dict['itr'] % config['test_every']):
       #   if config['G_eval_mode']:
       #     print('Switchin G to eval mode...')
