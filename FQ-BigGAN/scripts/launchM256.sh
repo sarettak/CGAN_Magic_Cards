@@ -1,7 +1,7 @@
 #!/bin/bash
 # export CUDA_VISIBLE_DEVICES=1,2
 python train.py \
---dataset Magic --parallel --shuffle  --num_workers 8 --batch_size 256 --load_in_mem  \
+--dataset Magic --parallel --shuffle --num_workers 1 --batch_size 256  \
 --num_G_accumulations 4 --num_D_accumulations 4 \
 --num_D_steps 1 --G_lr 1e-4 --D_lr 4e-4 --D_B2 0.999 --G_B2 0.999 \
 --G_attn 64 --D_attn 64 \
