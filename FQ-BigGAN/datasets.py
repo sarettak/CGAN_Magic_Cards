@@ -79,6 +79,91 @@ def default_loader(path):
     return pil_loader(path)
 
 
+import json
+import os
+import re
+class MagicDataset(data.Dataset):
+  """A data loader for the Magic Dataset."""
+  def __init__(self, root, transform=None, target_transform=None,
+               loader=default_loader, load_in_mem=False, 
+               index_filename='imagenet_imgs.npz', **kwargs):
+    METADATA_FILE = "AllCards.json"
+    DATASET_FOLDERS_FILE = "dataset_folders"
+    metadata = json.load(open(os.path.join(root, METADATA_FILE)))
+    dataset_folders = open(os.path.join(root, DATASET_FOLDERS_FILE))
+    data_dict = {}
+    classes_dict = {}
+
+    for folder in dataset_folders:
+      folder = os.path.join(root, folder.strip())
+      for card_filename in os.listdir(folder):
+          card_name = re.split("( \[.*\])?\.", card_filename)[0]
+          try:
+            if (("Creature" in metadata[card_name]["type"] or "Land" in metadata[card_name]["type"])
+                and metadata[card_name]["subtypes"]):
+                card_path = os.path.join(folder, card_filename)
+                if card_name in data_dict.keys():
+                  data_dict[card_name].append(card_path)
+                else:
+                  data_dict[card_name] = [card_path]
+          except:
+            continue
+
+    for k, v in data_dict.items():
+      k2 = metadata[k]["subtypes"][0]
+      if k2 in classes_dict.keys():
+          classes_dict[k2].extend(v)
+      else:
+          classes_dict[k2] = v.copy()
+
+    class_to_idx = {k: i for i, k in enumerate(classes_dict)} 
+    imgs = {i: (k, class_to_idx[data_dict[k]]) for i, k in enumerate(data_dict)}
+
+    self.root = root
+    self.class_to_idx = class_to_idx
+    self.imgs = imgs
+    self.transform = transform
+    self.target_transform = target_transform
+    self.loader = loader
+    self.load_in_mem = load_in_mem
+    self.data_dict = data_dict
+    self.classes_dict = classes_dict
+
+
+  def __getitem__(self, index):
+    """
+    Args:
+        index (int): Index
+
+    Returns:
+        tuple: (image, target) where target is class_index of the target class.
+    """
+    path, target = self.imgs[index]
+    img = self.loader(str(path))
+    if self.transform is not None:
+      img = self.transform(img)
+    
+    if self.target_transform is not None:
+      target = self.target_transform(target)
+    
+    # print(img.size(), target)
+    return img, int(target)
+
+  def __len__(self):
+    return len(self.data_dict)
+
+  def __repr__(self):
+    fmt_str = 'Dataset ' + self.__class__.__name__ + '\n'
+    fmt_str += '    Number of datapoints: {}\n'.format(self.__len__())
+    fmt_str += '    Root Location: {}\n'.format(self.root)
+    tmp = '    Transforms (if any): '
+    fmt_str += '{0}{1}\n'.format(tmp, self.transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
+    tmp = '    Target Transforms (if any): '
+    fmt_str += '{0}{1}'.format(tmp, self.target_transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
+    return fmt_str
+        
+
+
 class ImageFolder(data.Dataset):
   """A generic data loader where the images are arranged in this way: ::
 
@@ -224,7 +309,6 @@ class ILSVRC_HDF5(data.Dataset):
         img = f['imgs'][index]
         target = f['labels'][index]
     
-   
     # if self.transform is not None:
         # img = self.transform(img)
     # Apply my own transform
