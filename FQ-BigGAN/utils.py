@@ -536,8 +536,6 @@ class Crop(object):
     return self.__class__.__name__
 
 
-
-
 class Paste(object):
   """Paste the given PIL Image """
 
@@ -549,7 +547,6 @@ class Paste(object):
         PIL Image: Pasted image.
     """
     original_img.paste(img, (30, 70))
-
     return original_img
 
   def __repr__(self):
@@ -632,13 +629,15 @@ def get_data_loaders(dataset, data_root=None, augment=False, batch_size=64,
         original_img = transforms.Image()
 
         # 1 Augmentation Techniques (Color)
-        train_transform = [transforms.Resize(image_size),
-                           transforms.Crop(), transforms.ColorJitter(contrast=2), 
-                           transforms.Paste(original_img)]
+        train_transform = [transforms.Crop(), 
+                           transforms.ColorJitter(contrast=2), 
+                           transforms.Paste(original_img),
+                           transforms.Resize(image_size)]
         # 2 Augmentation Techniques (Color + Position)
-        train_transform = [transforms.Resize(image_size),
-                           transforms.Crop(), transforms.RandomHorizontalFlip(p=1),
-                           transforms.ColorJitter(saturation=2), transforms.Paste(original_img)]
+        train_transform = [transforms.Crop(), transforms.RandomHorizontalFlip(p=1),
+                           transforms.ColorJitter(saturation=2),
+                           transforms.Paste(original_img),
+                           transforms.Resize(image_size)]
       else:
         train_transform = [RandomCropLongEdge(),
                          transforms.Resize(image_size),
