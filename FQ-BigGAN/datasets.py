@@ -85,8 +85,7 @@ import re
 class MagicDataset(data.Dataset):
   """A data loader for the Magic Dataset."""
   def __init__(self, root, transform=None, target_transform=None,
-               loader=default_loader, load_in_mem=False, 
-               index_filename='imagenet_imgs.npz', **kwargs):
+               loader=default_loader, load_in_mem=False, **kwargs):
     METADATA_FILE = "AllCards.json"
     DATASET_FOLDERS_FILE = "dataset_folders"
     metadata = json.load(open(os.path.join(root, METADATA_FILE)))
