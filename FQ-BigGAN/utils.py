@@ -504,50 +504,23 @@ class RandomCropLongEdge(object):
   def __repr__(self):
     return self.__class__.__name__
 
+class MagicTransform(object):
 
-class Image(object):
-  """Return the given PIL Image """
+  def __init__(self, custom_transforms):
+    self.custom_transforms = custom_transforms
 
-  def __call__(self, img):
-    return img
-
-  def __repr__(self):
-    return self.__class__.__name__
-
-
-class Crop(object):
-  """Crops the given PIL Image .
-  Args:
-      size (sequence or int): Desired output size of the crop. If size is an
-          int instead of sequence like (h, w), a square crop (size, size) is
-          made.
-  """
   def __call__(self, img):
     """
     Args:
-        img (PIL Image): Image to be cropped.
-    Returns:
-        PIL Image: Cropped image.
-    """
-
-    return transforms.functional.crop(img, 70, 30, 310, 421)
-
-  def __repr__(self):
-    return self.__class__.__name__
-
-
-class Paste(object):
-  """Paste the given PIL Image """
-
-  def __call__(self, img, original_img):
-    """
-    Args:
-        img (PIL Image): Image to be pasted.
+        img (PIL Image): Image to be Magic transformed.
     Returns:
         PIL Image: Pasted image.
     """
-    original_img.paste(img, (30, 70))
-    return original_img
+    original_img = img
+    img = transforms.functional.crop(img, 70, 30, 310, 421)
+    for custom_transform in self.custom_transforms:
+      img = custom_transform
+    return original_img.paste(img, (30, 70))
 
   def __repr__(self):
     return self.__class__.__name__
@@ -626,21 +599,17 @@ def get_data_loaders(dataset, data_root=None, augment=False, batch_size=64,
         train_transform = [transforms.RandomCrop(32, padding=4),
                            transforms.RandomHorizontalFlip()]
       elif dataset == 'Magic':
-        original_img = transforms.Image()
 
         # 1 Augmentation Techniques (Color)
-        train_transform = [transforms.Crop(), 
-                           transforms.ColorJitter(contrast=2), 
-                           transforms.Paste(original_img),
-                           transforms.Resize(image_size)]
+        train_transform = [MagicTransform([transforms.ColorJitter(contrast=2)]), 
+                           transforms.Resize([image_size, image_size])]
         # 2 Augmentation Techniques (Color + Position)
-        train_transform = [transforms.Crop(), transforms.RandomHorizontalFlip(p=1),
-                           transforms.ColorJitter(saturation=2),
-                           transforms.Paste(original_img),
-                           transforms.Resize(image_size)]
+        train_transform = [MagicTransform([transforms.RandomHorizontalFlip(p=1),
+                           transforms.ColorJitter(saturation=2)]),
+                           transforms.Resize([image_size, image_size])]
       else:
         train_transform = [RandomCropLongEdge(),
-                         transforms.Resize(image_size),
+                         transforms.Resize([image_size, image_size]),
                          transforms.RandomHorizontalFlip()]
     else:
       print('Data will not be augmented...')
@@ -648,7 +617,7 @@ def get_data_loaders(dataset, data_root=None, augment=False, batch_size=64,
         train_transform = []
       elif dataset == 'Magic':
         # 0 Augmentation Techniques
-        train_transform = [transforms.Resize(image_size)]
+        train_transform = [transforms.Resize(image_size, image_size)]
       else:
         train_transform = [CenterCropLongEdge(), transforms.Resize(image_size)]
       # train_transform = [transforms.Resize(image_size), transforms.CenterCrop]
