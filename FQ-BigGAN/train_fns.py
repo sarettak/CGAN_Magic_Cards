@@ -37,13 +37,11 @@ def GAN_training_function(G, D, GD, z_, y_, ema, state_dict, config):
       D.optim.zero_grad()
       for accumulation_index in range(config['num_D_accumulations']):
         z_.sample_()
-        y_.sample_()
-
+        y_.sample_()                            
+        # print("noise vectors and class:\n", z_[0].shape, y_[0].shape)
         D_fake, D_real, quant_loss_real, quant_loss_fake, ppl = GD(z_[:config['batch_size']],
-                                                               y_[:config[
-            'batch_size']],
+                                                               y_[:config['batch_size']],
                             x[counter], y[counter], train_G=False, split_D=config['split_D'])
-         
         # Compute components of D's loss, average them, and divide by 
         # the number of gradient accumulations
         D_loss_real, D_loss_fake = losses.discriminator_loss(D_fake, D_real)

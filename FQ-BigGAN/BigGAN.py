@@ -234,10 +234,13 @@ class Generator(nn.Module):
 	# G.shared in this forward function, it would be harder to handle.
 	def forward(self, z, y):
 		# If hierarchical, concatenate zs and ys
+		# print(z.dtype, y.dtype)
+		# y = torch.unsqueeze(y, 1).double()
 		if self.hier:
 			zs = torch.split(z, self.z_chunk_size, 1)
 			z = zs[0]
 			ys = [torch.cat([y, item], 1) for item in zs[1:]]
+			#print(ys)
 		else:
 			ys = [y] * len(self.blocks)
 
@@ -438,6 +441,7 @@ class G_D(nn.Module):
 		# If training G, enable grad tape
 		with torch.set_grad_enabled(train_G):
 			# Get Generator output given noise
+			# print(z.shape, self.G.shared(gy).shape)
 			G_z = self.G(z, self.G.shared(gy))
 			# Cast as necessary
 			if self.G.fp16 and not self.D.fp16:

@@ -153,7 +153,6 @@ class MagicDataset(data.Dataset):
     if self.target_transform is not None:
       target = self.target_transform(target)
     
-    # print(img.size(), target)
     return img, int(target)
 
   def __len__(self):
@@ -390,7 +389,7 @@ class CIFAR10(dset.CIFAR10):
       self.data = self.data.transpose((0, 2, 3, 1))  # convert to HWC
     
     elif self.train:
-      print(np.shape(self.data))
+      # print(np.shape(self.data))
       if self.val_split > 0:
         self.data = np.delete(self.data,self.val_indices,axis=0)
         self.labels = list(np.delete(np.asarray(self.labels),self.val_indices,axis=0))

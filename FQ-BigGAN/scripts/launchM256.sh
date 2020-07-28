@@ -8,7 +8,7 @@ python train.py \
 --G_nl inplace_relu --D_nl inplace_relu \
 --SN_eps 1e-6 --BN_eps 1e-5 --adam_eps 1e-6 \
 --G_ortho 0.0 \
---hier --dim_z 120 \
+--dim_z 120 \
 --G_eval_mode \
 --G_ch 64 --D_ch 64 \
 --ema --use_ema --ema_start 20000 \

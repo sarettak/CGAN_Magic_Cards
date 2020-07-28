@@ -10,3 +10,4 @@ python3 train.py --shuffle --batch_size 64 --parallel \
 --num_best_copies 5 --num_save_copies 2 --seed 0 \
 --discrete_layer 0123 --commitment 10.0 --dict_size 6 --dict_decay 0.9 \
 --name_suffix quant
+--hier
