@@ -17,7 +17,7 @@
 # --use_multiepoch_sampler --name_suffix quant
 
 python3 train.py --shuffle --batch_size 128 --num_workers 8 --parallel \
---load_in_mem
+--load_in_mem \
 --num_G_accumulations 1 --num_D_accumulations 1 --num_epochs 500 \
 --num_D_steps 4 --G_lr 2e-4 \
 --D_lr 2e-4 --dataset Magic --G_ortho 0.0 \
