@@ -135,6 +135,13 @@ class MagicDataset(data.Dataset):
     self.load_in_mem = load_in_mem
     # self.data_dict = data_dict
     # self.classes_dict = classes_dict
+    if self.load_in_mem:
+      print('Loading all images into memory...')
+      self.data, self.labels = [], []
+      for index in tqdm(range(len(self.imgs))):
+        path, target = imgs[index][0], imgs[index][1]
+        self.data.append(self.transform(self.loader(path)))
+        self.labels.append(target)
 
 
   def __getitem__(self, index):
@@ -145,10 +152,14 @@ class MagicDataset(data.Dataset):
     Returns:
         tuple: (image, target) where target is class_index of the target class.
     """
-    path, target = self.imgs[index]
-    img = self.loader(str(path))
-    if self.transform is not None:
-      img = self.transform(img)
+    if self.load_in_mem:
+        img = self.data[index]
+        target = self.labels[index]
+    else:
+      path, target = self.imgs[index]
+      img = self.loader(str(path))
+      if self.transform is not None:
+        img = self.transform(img)
     
     if self.target_transform is not None:
       target = self.target_transform(target)
