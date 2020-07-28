@@ -13,6 +13,7 @@ import torchvision.transforms as transforms
 from torchvision.datasets.utils import download_url, check_integrity
 import torch.utils.data as data
 from torch.utils.data import DataLoader
+import matplotlib.pyplot as plt
          
 IMG_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.ppm', '.bmp', '.pgm']
 
@@ -90,12 +91,13 @@ class MagicDataset(data.Dataset):
     DATASET_FOLDERS_FILE = "dataset_folders"
     metadata = json.load(open(os.path.join(root, METADATA_FILE)))
     dataset_folders = open(os.path.join(root, DATASET_FOLDERS_FILE))
-    #data_dict = {}
-    #classes_dict = {}
-    #imgs = []
+    # data_dict = {}
+    # classes_dict = {}
+    classes = {}
     card_to_name = {}
     name_to_class = {}
 
+    #iterate for classes
     for folder in dataset_folders:
       folder = os.path.join(root, folder.strip())
       for card_filename in os.listdir(folder):
@@ -104,6 +106,27 @@ class MagicDataset(data.Dataset):
             if (("Creature" in metadata[card_name]["type"] or 
                 "Land" in metadata[card_name]["type"])
                 and metadata[card_name]["subtypes"]):
+                classes.setdefault(metadata[card_name]["subtypes"][0], 0)
+                classes[metadata[card_name]["subtypes"][0]] += 1
+          except:
+            continue
+
+    classes_with_occurence = sorted([(k, v) for k, v in classes.items()], key= lambda i: i[1], reverse=True)
+    classes = [x for x, y in classes_with_occurence]
+    classes = classes[:16]
+
+    dataset_folders = open(os.path.join(root, DATASET_FOLDERS_FILE))
+    # iterate for images
+    for folder in dataset_folders:
+      folder = os.path.join(root, folder.strip())
+      for card_filename in os.listdir(folder):
+          card_name = re.split("( \[.*\])?\.", card_filename)[0]
+          try:
+            if (("Creature" in metadata[card_name]["type"] or 
+                "Land" in metadata[card_name]["type"])
+                and metadata[card_name]["subtypes"] and 
+                metadata[card_name]["subtypes"][0] in classes):
+                
                 card_path = os.path.join(folder, card_filename)
                 # if card_name in data_dict.keys():
                 #   data_dict[card_name].append(card_path)
@@ -121,13 +144,14 @@ class MagicDataset(data.Dataset):
     #       classes_dict[k2].extend(v)
     #   else:
     #       classes_dict[k2] = v.copy()
-
-    class_to_idx = {k: i for i, k in enumerate(set(name_to_class.values()))}
+    class_to_idx = {k: i for i, k in enumerate(classes)}
+    #class_to_idx = {k: i for i, k in enumerate(set(name_to_class.values()))}
     imgs = {i: (card_path, class_to_idx[name_to_class[card_to_name[card_path]]]) 
             for i, card_path in enumerate(card_to_name)}
-
+    print(len(imgs))
     self.root = root
     self.class_to_idx = class_to_idx
+    self.classes = classes
     self.imgs = imgs
     self.transform = transform
     self.target_transform = target_transform
@@ -140,7 +164,10 @@ class MagicDataset(data.Dataset):
       self.data, self.labels = [], []
       for index in tqdm(range(len(self.imgs))):
         path, target = imgs[index][0], imgs[index][1]
-        self.data.append(self.transform(self.loader(path)))
+        img = self.transform(self.loader(path))
+        self.data.append(img)
+        # plt.imshow(torch.transpose(img, 0, 2))
+        # plt.show()
         self.labels.append(target)
 
 
