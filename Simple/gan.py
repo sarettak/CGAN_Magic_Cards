@@ -16,7 +16,7 @@ parser.add_argument('--lr', type=float, default=0.0002, help='adam: learning rat
 parser.add_argument('--b1', type=float, default=0.5, help='adam: decay of first order momentum of gradient')
 parser.add_argument('--b2', type=float, default=0.999, help='adam: decay of first order momentum of gradient')
 parser.add_argument('--n_cpu', type=int, default=8, help='number of cpu threads to use during batch generation')
-parser.add_argument('--latent_dim', type=int, default=100, help='dimensionality of the latent space')
+parser.add_argument('--latent_dim', type=int, default=120, help='dimensionality of the latent space')
 parser.add_argument('--img_size', type=int, default=64, help='size of each image dimension')
 parser.add_argument('--channels', type=int, default=3, help='number of image channels')
 parser.add_argument('--sample_interval', type=int, default=512, help='interval betwen image samples')
@@ -190,12 +190,8 @@ for epoch in range(opt.n_epochs):
                 #         'height': 512
                 # },
                 #     win=1)
-                writer.add_image("samples_1", imgs_fake.data[0])
-                writer.add_image("samples_2", imgs_fake.data[1])
-                writer.add_image("samples_3", imgs_fake.data[2])
-                writer.add_image("samples_4", imgs_fake.data[3])
-                writer.add_image("samples_5", imgs_fake.data[4])
-                writer.add_image("samples_6", imgs_fake.data[5])
+                writer.add_images("samples_1", imgs_fake.data[:25])
+              
 
                 # vis.images(
                 #     imgs_fake.data[:25],
