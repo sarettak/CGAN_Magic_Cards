@@ -2,6 +2,7 @@
 import argparse
 
 import torch
+import tqdm
 from torch import nn, optim
 from torch.autograd.variable import Variable
 
@@ -84,7 +85,7 @@ noise_fixed = Variable(Tensor(25, opt.latent_dim, 1, 1).normal_(0, 1), requires_
 
 for epoch in range(opt.n_epochs):
     print('Epoch {}'.format(epoch))
-    for i, (batch, _) in enumerate(batch_iterator):
+    for i, (batch, _) in tqdm(enumerate(batch_iterator)):
         # == Discriminator update == #
         for iter in range(opt.n_critic):
             # Sample real and fake images, using notation in paper.
