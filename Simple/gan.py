@@ -103,7 +103,7 @@ train_transform = transforms.Compose(train_transform + [
                      transforms.ToTensor(),
                      transforms.Normalize(norm_mean, norm_std)])
 
-magic = MagicDataset("data/magic",train_transform, conditioned=False)
+magic = MagicDataset("data/magic", train_transform)
 
 batch_iterator = DataLoader(magic, shuffle=True, batch_size=opt.batch_size) # List, NCHW format.
 

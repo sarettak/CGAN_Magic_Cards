@@ -44,7 +44,7 @@ class MagicTransform(object):
 
 class MagicDataset(data.Dataset):
   """A data loader for the Magic Dataset."""
-  def __init__(self, root, transform=None, conditioned=True,
+  def __init__(self, root, transform=None,
                loader=pil_loader, load_in_mem=True, **kwargs):
     METADATA_FILE = "AllCards.json"
     DATASET_FOLDERS_FILE = "dataset_folders"
@@ -146,10 +146,7 @@ class MagicDataset(data.Dataset):
       img = self.loader(str(path))
       if self.transform is not None:
         img = self.transform(img)
-    if self.conditioned:
-      return img, int(target)
-    else:
-      return img
+    return img, int(target)
 
   def __len__(self):
     return len(self.imgs)
