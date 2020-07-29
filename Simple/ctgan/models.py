@@ -125,9 +125,10 @@ class Generator(nn.Module):
             ResidualBlock(128, 128, 3, resample='up'),  # 128 x 8 x 8
             ResidualBlock(128, 128, 3, resample='up'),  # 128 x 16 x 16
             ResidualBlock(128, 128, 3, resample='up'),  # 128 x 32 x 32
+            ResidualBlock(128, 128, 3, resample='up'),  # 128 x 64 x 64
             nn.BatchNorm2d(128),
             nn.ReLU(inplace=True),
-            nn.Conv2d(128, 3, 3, padding=(3-1)//2),     # 3 x 32 x 32 (no kaiming init. here)
+            nn.Conv2d(128, 3, 3, padding=(3-1)//2),     # 3 x 64 x 64 (no kaiming init. here)
             nn.Tanh()
         )
 
@@ -144,15 +145,15 @@ class Discriminator(nn.Module):
         of 3 x 32 x 32 images, it is hardcoded here.
         '''
 
-        self.DiscBlock1 = DiscBlock1(n_output)                      # 128 x 16 x 16
+        self.DiscBlock1 = DiscBlock1(n_output)                      # 128 x 32 x 32
         self.block1 = nn.Sequential(
-            ResidualBlock(n_output, n_output, 3, resample='down', bn=False, spatial_dim=16),  # 128 x 8 x 8
+            ResidualBlock(n_output, n_output, 3, resample='down', bn=False, spatial_dim=32),  # 128 x 16 x 16
         )
         self.block2 = nn.Sequential(
-            ResidualBlock(n_output, n_output, 3, resample=None, bn=False, spatial_dim=8),    # 128 x 8 x 8
+            ResidualBlock(n_output, n_output, 3, resample=None, bn=False, spatial_dim=16),    # 128 x 16 x 16
         )
         self.block3 = nn.Sequential(
-            ResidualBlock(n_output, n_output, 3, resample=None, bn=False, spatial_dim=8),    # 128 x 8 x 8
+            ResidualBlock(n_output, n_output, 3, resample=None, bn=False, spatial_dim=16),    # 128 x 16 x 16
         )
 
         self.l1 = nn.Sequential(nn.Linear(128, 1))                  # 128 x 1
