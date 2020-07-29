@@ -25,6 +25,7 @@ parser.add_argument('--img_size', type=int, default=64, help='size of each image
 parser.add_argument('--latent_dim', type=int, default=128, help='number of input units to generate an image')
 parser.add_argument('--channels', type=int, default=3, help='number of image channels')
 parser.add_argument('--sample_interval', type=int, default=256, help='interval betwen image samples')
+parser.add_argument('--load_in_mem', action='store_true', default=False, help='load training images in memory')
 opt = parser.parse_args()
 
 try:
