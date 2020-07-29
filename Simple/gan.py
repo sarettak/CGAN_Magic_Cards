@@ -189,7 +189,7 @@ for epoch in range(opt.n_epochs):
                 #         'height': 512
                 # },
                 #     win=1)
-                writer.add_image("samples", imgs_fake.data[:25])
+                writer.add_images("samples", imgs_fake.data[:25])
                 # vis.images(
                 #     imgs_fake.data[:25],
                 #     nrow=5, win=2,
