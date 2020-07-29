@@ -87,8 +87,8 @@ class Discriminator(nn.Module):
         return prob
 
 
-# norm_mean = [0.5,0.5,0.5]
-# norm_std = [0.5,0.5,0.5]
+norm_mean = [0.5,0.5,0.5]
+norm_std = [0.5,0.5,0.5]
 # 0 No Augmentation
 train_transform = [transforms.Resize([opt.img_size, opt.img_size])]
 
@@ -99,12 +99,11 @@ train_transform = [transforms.Resize([opt.img_size, opt.img_size])]
 # # 2 Augmentation Techniques (Color + Position)
 # train_transform = [MagicTransform([transforms.RandomHorizontalFlip(p=1),
 #                     transforms.ColorJitter(saturation=2)]),
-#                     transforms.Resize([image_size, image_size])]
+#                     transfMagicDatasetorms.Resize([image_size, image_size])]
 
 train_transform = transforms.Compose(train_transform + [
                      transforms.ToTensor(),
-                    #  transforms.Normalize(norm_mean, norm_std)
-                     ])
+                     transforms.Normalize(norm_mean, norm_std)])
 
 magic = MagicDataset("data/magic", transform=train_transform, load_in_mem=opt.load_in_mem)
 
@@ -178,7 +177,7 @@ for epoch in range(opt.n_epochs):
                 g_losses.append(g_loss.item())
                 d_losses.append(d_loss.item())
 
-                # Display results on visdom page.
+                # Display results on tensorboard.
 
                 # vis.line(
                 #     X=torch.stack([Tensor(epochs)] * len(loss_legend), dim=1),
