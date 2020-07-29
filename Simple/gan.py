@@ -85,7 +85,7 @@ class Discriminator(nn.Module):
         return prob
 
 # 0 No Augmentation
-train_transform = [transforms.Resize([img_size, img_size])]
+train_transform = [transforms.Resize([opt.img_size, opt.img_size])]
 
 # # 1 Augmentation Techniques (Color)
 # train_transform = [MagicTransform([transforms.ColorJitter(contrast=2)]), 
