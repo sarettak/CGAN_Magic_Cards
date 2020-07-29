@@ -26,6 +26,7 @@ parser.add_argument('--latent_dim', type=int, default=128, help='number of input
 parser.add_argument('--channels', type=int, default=3, help='number of image channels')
 parser.add_argument('--sample_interval', type=int, default=256, help='interval betwen image samples')
 parser.add_argument('--load_in_mem', action='store_true', default=False, help='load training images in memory')
+parser.add_argument('--data_path', type=str, default="../data/magic", help="path of the dataset")
 opt = parser.parse_args()
 
 try:
@@ -55,7 +56,7 @@ train_transform = transforms.Compose(train_transform + [
                      transforms.ToTensor(),
                      transforms.Normalize(norm_mean, norm_std)])
 
-magic = MagicDataset("data/magic", transform=train_transform, load_in_mem=opt.load_in_mem)
+magic = MagicDataset(opt.data_path, transform=train_transform, load_in_mem=opt.load_in_mem)
 
 batch_iterator = DataLoader(magic, shuffle=True, batch_size=opt.batch_size) # List, NCHW format.
 
