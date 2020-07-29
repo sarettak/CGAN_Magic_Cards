@@ -246,7 +246,7 @@ for epoch in range(opt.n_epochs):
                 noise = Variable(Tensor(SAMPLES_COLUMN*GENERATE_CLASSES, opt.latent_dim).normal_(0, 1))
 
                 labels_onehot = Variable(Tensor(SAMPLES_COLUMN*GENERATE_CLASSES, opt.n_classes).zero_())
-                labels_ = torch.range(0, GENERATE_CLASSES)
+                labels_ = torch.range(0, GENERATE_CLASSES-1)
                 labels_ = labels_.view(1, -1).repeat(SAMPLES_COLUMN, 1).transpose(0, 1).contiguous().view(1, -1) # my version of matlab's repelem
                 labels_ = labels_.type(LongTensor)
                 labels_ = labels_.view(-1, 1)
