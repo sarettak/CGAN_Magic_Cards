@@ -169,7 +169,7 @@ for epoch in range(opt.n_epochs):
         if writer:
             batches_done = epoch * len(batch_iterator) + i
             if batches_done % opt.sample_interval == 0:
-
+                print("Writing on Tensorboard: ")
                 # Keep a record of losses for plotting.
                 epochs.append(epoch + i/len(batch_iterator))
                 g_losses.append(g_loss.item())
@@ -189,7 +189,7 @@ for epoch in range(opt.n_epochs):
                 #         'height': 512
                 # },
                 #     win=1)
-                writer.add_images("samples", imgs_fake.data[:25])
+                writer.add_image("samples", imgs_fake.data[0])
                 # vis.images(
                 #     imgs_fake.data[:25],
                 #     nrow=5, win=2,
