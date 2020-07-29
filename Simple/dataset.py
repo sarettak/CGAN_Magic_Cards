@@ -45,7 +45,7 @@ class MagicTransform(object):
 class MagicDataset(data.Dataset):
   """A data loader for the Magic Dataset."""
   def __init__(self, root, transform=None,
-               loader=pil_loader, load_in_mem=True, **kwargs):
+               loader=pil_loader, load_in_mem=False, **kwargs):
     METADATA_FILE = "AllCards.json"
     DATASET_FOLDERS_FILE = "dataset_folders"
     metadata = json.load(open(os.path.join(root, METADATA_FILE)))

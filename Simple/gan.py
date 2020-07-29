@@ -20,6 +20,8 @@ parser.add_argument('--latent_dim', type=int, default=120, help='dimensionality 
 parser.add_argument('--img_size', type=int, default=64, help='size of each image dimension')
 parser.add_argument('--channels', type=int, default=3, help='number of image channels')
 parser.add_argument('--sample_interval', type=int, default=512, help='interval betwen image samples')
+parser.add_argument('--load_in_mem', action='store_true', default=False, help='load training images in memory')
+
 opt = parser.parse_args()
 
 
@@ -104,7 +106,7 @@ train_transform = transforms.Compose(train_transform + [
                     #  transforms.Normalize(norm_mean, norm_std)
                      ])
 
-magic = MagicDataset("data/magic", train_transform)
+magic = MagicDataset("data/magic", transform=train_transform, load_in_mem=opt.load_in_mem)
 
 batch_iterator = DataLoader(magic, shuffle=True, batch_size=opt.batch_size) # List, NCHW format.
 
