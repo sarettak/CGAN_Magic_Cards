@@ -26,10 +26,6 @@ parser.add_argument('--load_in_mem', action='store_true', default=False, help='l
 opt = parser.parse_args()
 
 
-# Set up the visdom, if exists.
-# If not, visualization of the training will not be possible.
-# If visdom exists, it should be also on.
-# Use 'python -m visdom.server' command to activate the server.
 try:
     from torch.utils.tensorboard import SummaryWriter
     writer = SummaryWriter() # Create tensorboard env.
@@ -192,7 +188,8 @@ for epoch in range(opt.n_epochs):
                 #         'height': 512
                 # },
                 #     win=1)
-                writer.add_images("samples_1", imgs_fake.data[:24], global_step=batches_done)
+                writer.add_scalars("losses", {"dloss": d_loss.item(), "gloss": g_loss.item()}, global_step=epoch)
+                writer.add_images("samples", imgs_fake.data[:24], global_step=batches_done)
               
 
                 # vis.images(
