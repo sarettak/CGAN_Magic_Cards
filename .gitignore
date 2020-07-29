@@ -130,4 +130,5 @@ dmypy.json
 .vscode
 FQ-BigGAN/data/
 FQ-BigGAN/logs/
+Simple/data/magic
 data/
