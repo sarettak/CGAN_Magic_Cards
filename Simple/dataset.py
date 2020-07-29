@@ -108,7 +108,6 @@ class MagicDataset(data.Dataset):
     imgs = {i: (card_path, class_to_idx[name_to_class[card_to_name[card_path]]]) 
             for i, card_path in enumerate(card_to_name)}
     print(len(imgs))
-    self.conditioned = conditioned
     self.root = root
     self.class_to_idx = class_to_idx
     self.classes = classes
