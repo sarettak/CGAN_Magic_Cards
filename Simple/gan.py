@@ -85,8 +85,8 @@ class Discriminator(nn.Module):
         return prob
 
 
-norm_mean = [0.5,0.5,0.5]
-norm_std = [0.5,0.5,0.5]
+# norm_mean = [0.5,0.5,0.5]
+# norm_std = [0.5,0.5,0.5]
 # 0 No Augmentation
 train_transform = [transforms.Resize([opt.img_size, opt.img_size])]
 
@@ -101,7 +101,8 @@ train_transform = [transforms.Resize([opt.img_size, opt.img_size])]
 
 train_transform = transforms.Compose(train_transform + [
                      transforms.ToTensor(),
-                     transforms.Normalize(norm_mean, norm_std)])
+                    #  transforms.Normalize(norm_mean, norm_std)
+                     ])
 
 magic = MagicDataset("data/magic", train_transform)
 
