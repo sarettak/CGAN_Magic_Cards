@@ -25,8 +25,8 @@ parser.add_argument('--lr', type=float, default=0.0002, help='adam: learning rat
 parser.add_argument('--b1', type=float, default=0.5, help='adam: beta 1')
 parser.add_argument('--b2', type=float, default=0.999, help='adam: beta 2')
 parser.add_argument('--latent_dim', type=int, default=100, help='dimensionality of the latent space')
-parser.add_argument('--img_size', type=int, default=28, help='size of each image dimension')
-parser.add_argument('--channels', type=int, default=1, help='number of image channels')
+parser.add_argument('--img_size', type=int, default=64, help='size of each image dimension')
+parser.add_argument('--channels', type=int, default=3, help='number of image channels')
 parser.add_argument('--n_classes', type=int, default=10, help='number of classes (e.g., digits 0 ..9, 10 classes on mnist)')
 parser.add_argument('--sample_interval', type=int, default=512, help='interval betwen image samples')
 parser.add_argument('--data_path', type=str, default="../data/magic", help="path of the dataset")
@@ -255,7 +255,6 @@ for epoch in range(opt.n_epochs):
                 imgs_fake = Variable(generator(noise, labels_onehot))
 
 
-                writer.add_scalars("losses", {"dloss": d_loss.item(), "gloss": g_loss.item()}, 
-                global_step=epoch)
+                writer.add_scalars("losses", {"dloss": d_loss.item(), "gloss": g_loss.item()}, global_step=epoch)
                 # Display results on tensorboard.
                 writer.add_images("samples", imgs_fake.data[:GENERATE_CLASSES*SAMPLES_COLUMN], global_step=epoch)
