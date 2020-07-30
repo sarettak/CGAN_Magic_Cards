@@ -170,8 +170,15 @@ class MagicDataset(data.Dataset):
         # plt.imshow(torch.transpose(img, 0, 2))
         # plt.show()
         self.labels.append(target)
+        
 
-def __getitem__(self, index):
+
+
+
+
+
+
+  def __getitem__(self, index):
     """
     Args:
         index (int): Index
@@ -193,20 +200,19 @@ def __getitem__(self, index):
     
     return img, int(target)
 
-def __len__(self):
-  return len(self.imgs)
+  def __len__(self):
+    return len(self.imgs)
 
-def __repr__(self):
-  fmt_str = 'Dataset ' + self.__class__.__name__ + '\n'
-  fmt_str += '    Number of datapoints: {}\n'.format(self.__len__())
-  fmt_str += '    Root Location: {}\n'.format(self.root)
-  tmp = '    Transforms (if any): '
-  fmt_str += '{0}{1}\n'.format(tmp, self.transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
-  tmp = '    Target Transforms (if any): '
-  fmt_str += '{0}{1}'.format(tmp, self.target_transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
-  return fmt_str
+  def __repr__(self):
+    fmt_str = 'Dataset ' + self.__class__.__name__ + '\n'
+    fmt_str += '    Number of datapoints: {}\n'.format(self.__len__())
+    fmt_str += '    Root Location: {}\n'.format(self.root)
+    tmp = '    Transforms (if any): '
+    fmt_str += '{0}{1}\n'.format(tmp, self.transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
+    tmp = '    Target Transforms (if any): '
+    fmt_str += '{0}{1}'.format(tmp, self.target_transform.__repr__().replace('\n', '\n' + ' ' * len(tmp)))
+    return fmt_str
 
-    
 
 class ImageFolder(data.Dataset):
   """A generic data loader where the images are arranged in this way: ::
