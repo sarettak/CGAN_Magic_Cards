@@ -115,7 +115,7 @@ class MagicDataset(data.Dataset):
     classes_with_occurence = sorted([(k, v) for k, v in classes.items()], key= lambda i: i[1], reverse=True)
     classes = [x for x, y in classes_with_occurence]
     #classes = classes[:16]
-    classes = classes[:10]
+    #classes = classes[:10]
     dataset_folders = open(os.path.join(root, DATASET_FOLDERS_FILE))
     # iterate for images
     for folder in dataset_folders:
