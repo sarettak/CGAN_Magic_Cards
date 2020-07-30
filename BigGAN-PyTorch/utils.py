@@ -576,15 +576,16 @@ class MagicTransform(object):
   def __call__(self, img):
     """
     Args:
-        img (PIL Image): Image to be Magic transformed.
+        img (PIL Image): Images to be Magic transformed.
     Returns:
         PIL Image: Pasted image.
     """
     original_img = img
     img = transforms.functional.crop(img, 70, 30, 310, 421)
     for custom_transform in self.custom_transforms:
-      img = custom_transform
-    return original_img.paste(img, (30, 70))
+      img = custom_transform(img)
+    original_img.paste(img, (30, 70))
+    return original_img
 
   def __repr__(self):
     return self.__class__.__name__
@@ -680,7 +681,7 @@ def get_data_loaders(dataset, data_root=None, augment=False, batch_size=64,
         # # 1 Augmentation Techniques (Color)
         # train_transform = [MagicTransform([transforms.ColorJitter(contrast=2)]), 
         #                    transforms.Resize([image_size, image_size])]
-        
+
         # 2 Augmentation Techniques (Color + Position)
         train_transform = [MagicTransform([transforms.RandomHorizontalFlip(p=1),
                            transforms.ColorJitter(saturation=2)]),
