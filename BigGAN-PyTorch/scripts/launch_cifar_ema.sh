@@ -9,7 +9,7 @@ CUDA_VISIBLE_DEVICES=0 python train.py \
 --G_init N02 --D_init N02 \
 --ema --use_ema --ema_start 1000 \
 --save_every 200 --num_best_copies 5 --num_save_copies 2 --seed 0 \
---data_root /data/magic \
+--data_root data \
 --weights_root logs \
 --logs_root logs \
 --samples_root samples \
