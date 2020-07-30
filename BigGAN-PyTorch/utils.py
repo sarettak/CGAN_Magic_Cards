@@ -678,14 +678,14 @@ def get_data_loaders(dataset, data_root=None, augment=False, batch_size=64,
                            transforms.Resize(image_size),
                            transforms.RandomHorizontalFlip()]
       elif dataset == 'Magic':
-        # # 1 Augmentation Techniques (Color)
-        # train_transform = [MagicTransform([transforms.ColorJitter(contrast=2)]), 
-        #                    transforms.Resize([image_size, image_size])]
-
-        # 2 Augmentation Techniques (Color + Position)
-        train_transform = [MagicTransform([transforms.RandomHorizontalFlip(p=1),
-                           transforms.ColorJitter(saturation=2)]),
+        # 1 Augmentation Techniques (Color)
+        train_transform = [MagicTransform([transforms.ColorJitter(contrast=2)]), 
                            transforms.Resize([image_size, image_size])]
+
+        # # 2 Augmentation Techniques (Color + Position)
+        # train_transform = [MagicTransform([transforms.RandomHorizontalFlip(p=1),
+        #                    transforms.ColorJitter(saturation=2)]),
+        #                    transforms.Resize([image_size, image_size])]
       else:
         train_transform = [RandomCropLongEdge(),
                          transforms.Resize(image_size),
