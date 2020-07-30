@@ -17,4 +17,4 @@ CUDA_VISIBLE_DEVICES=0 python train.py \
 --historical_save_every 2500 \
 --experiment_name default \
 #--load_weights 087500 \
---resume
+--resume --load_in_mem
