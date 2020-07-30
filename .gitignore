@@ -130,4 +130,7 @@ dmypy.json
 FQ-BigGAN/data/
 FQ-BigGAN/logs/
 Simple/data/magic
+BigGAN-PyTorch/data/
+BigGAN-PyTorch/logs/
+BigGAN-PyTorch/samples/
 data/
