@@ -10,11 +10,11 @@ CUDA_VISIBLE_DEVICES=0 python train.py \
 --ema --use_ema --ema_start 1000 \
 --save_every 200 --num_best_copies 5 --num_save_copies 2 --seed 0 \
 --data_root /data/magic \
---weights_root ../logs \
---logs_root ../logs \
---samples_root ../samples \
+--weights_root logs \
+--logs_root logs \
+--samples_root samples \
 --test_every 0 \
 --historical_save_every 2500 \
 --experiment_name default \
---load_weights 087500 \
+#--load_weights 087500 \
 --resume
