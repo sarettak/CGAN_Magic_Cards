@@ -9,10 +9,10 @@ CUDA_VISIBLE_DEVICES=0 python train.py \
 --G_init N02 --D_init N02 \
 --ema --use_ema --ema_start 1000 \
 --save_every 200 --num_best_copies 5 --num_save_copies 2 --seed 0 \
---data_root /scratch0/ilya/locDoc/data/cifar10 \
---weights_root /scratch0/ilya/locDoc/BigGAN/cifartest \
---logs_root /scratch0/ilya/locDoc/BigGAN/cifartest \
---samples_root /scratch0/ilya/locDoc/BigGAN/cifartest \
+--data_root /data/magic \
+--weights_root ../logs \
+--logs_root ../logs \
+--samples_root ../samples \
 --test_every 0 \
 --historical_save_every 2500 \
 --experiment_name default \
