@@ -504,7 +504,7 @@ root_dict = {'I32': 'ImageNet', 'I32_hdf5': 'ILSVRC32.hdf5',
 nclass_dict = {'I32': 1000, 'I32_hdf5': 1000,
                'I64': 1000, 'I64_hdf5': 1000,
                'TI64': 200, 'TI64_hdf5': 200,
-              'Magic': 10,
+               'Magic': 10,
                'I128': 1000, 'I128_hdf5': 1000,
                'I256': 1000, 'I256_hdf5': 1000,
                'C10': 10, 'C100': 100, 'STL64': 10, 'STL32': 10, 'STL48': 10, 'STL96': 10,
@@ -677,9 +677,10 @@ def get_data_loaders(dataset, data_root=None, augment=False, batch_size=64,
                            transforms.Resize(image_size),
                            transforms.RandomHorizontalFlip()]
       elif dataset == 'Magic':
-        # 1 Augmentation Techniques (Color)
-        train_transform = [MagicTransform([transforms.ColorJitter(contrast=2)]), 
-                           transforms.Resize([image_size, image_size])]
+        # # 1 Augmentation Techniques (Color)
+        # train_transform = [MagicTransform([transforms.ColorJitter(contrast=2)]), 
+        #                    transforms.Resize([image_size, image_size])]
+        
         # 2 Augmentation Techniques (Color + Position)
         train_transform = [MagicTransform([transforms.RandomHorizontalFlip(p=1),
                            transforms.ColorJitter(saturation=2)]),

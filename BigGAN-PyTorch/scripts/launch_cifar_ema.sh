@@ -12,6 +12,7 @@ CUDA_VISIBLE_DEVICES=0 python train.py \
 --data_root data \
 --weights_root logs \
 --logs_root logs \
+--augment \
 --samples_root samples \
 --test_every 0 \
 --historical_save_every 2500 \
