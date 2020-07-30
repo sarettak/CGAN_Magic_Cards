@@ -1078,7 +1078,7 @@ def sample_sheet(G, classes_per_sheet, num_classes, samples_per_class, parallel,
                                                  folder_number, i)
     torchvision.utils.save_image(out_ims, image_filename,
                                  nrow=samples_per_class, normalize=True)
-    writer.add_images("samples", out_ims, global_step=epoch)
+    writer.add_images("samples", out_ims)
 
     
 
