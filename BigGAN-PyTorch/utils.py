@@ -491,7 +491,7 @@ imsize_dict = {'I32': 32, 'I32_hdf5': 32,
                'I128': 128, 'I128_hdf5': 128,
                'I256': 256, 'I256_hdf5': 256,
                'C10': 32, 'C100': 32, 'STL64': 64, 'STL32': 32, 'STL48': 48, 'STL96': 96,
-               'Magic': 64
+               'Magic': 128
 }
 root_dict = {'I32': 'ImageNet', 'I32_hdf5': 'ILSVRC32.hdf5',
              'I64': 'train', 'I64_hdf5': 'ILSVRC64.hdf5',
@@ -516,7 +516,7 @@ classes_per_sheet_dict = {'I32': 50, 'I32_hdf5': 50,
                           'I128': 20, 'I128_hdf5': 20,
                           'I256': 20, 'I256_hdf5': 20,
                           'C10': 10, 'C100': 25, 'STL64': 10, 'STL32': 10, 'STL48': 10, 'STL96': 10,
-                          'Magic': 5
+                          'Magic': 10
 }
 activation_dict = {'inplace_relu': nn.ReLU(inplace=True),
                    'relu': nn.ReLU(inplace=False),
