@@ -1078,7 +1078,7 @@ def sample_sheet(G, classes_per_sheet, num_classes, samples_per_class, parallel,
                                                  folder_number, i)
     torchvision.utils.save_image(out_ims, image_filename,
                                  nrow=samples_per_class, normalize=True)
-    writer.add_images("samples", out_ims)
+    writer.add_images("samples", out_ims, global_step=folder_number)
 
     
 
@@ -1123,6 +1123,7 @@ def interp_sheet(G, num_per_sheet, num_midpoints, num_classes, parallel,
   if G.fp16:
     out_ims = out_ims.type(torch.float)
   torchvision.utils.save_image(out_ims, image_filename, nrow=num_midpoints + 2, normalize=True)
+  writer.add_images("sample_interp", out_ims, global_step=folder_number)
 
 
 # Convenience debugging function to print out gradnorms and shape from each layer
